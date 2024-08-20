@@ -1,5 +1,6 @@
 const express = require("express");
-const cors = require("cors")
+const cors = require("cors");
+const cookieParser = require("cookie-parser")
 require("dotenv").config();
 const {testConnection} = require("./src/connection/db");
 const routes = require("./src/routes");
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
+app.use(cookieParser());
 app.use((req, res, next) => {
     req.logger = new Logger(req);
     next();

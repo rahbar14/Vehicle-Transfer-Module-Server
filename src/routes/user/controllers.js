@@ -68,3 +68,18 @@ exports.login = async ({body}) => {
     }
 
 }
+
+exports.getUser = async ({user}) => ({
+    status:true,
+    message: "User Fetched",
+    data: user
+})
+
+exports.logout = async (req, res) => {
+    let options = {
+        httpOnly: true,
+        secure: false,
+    };
+
+    return { status:true, message: "User logged out", cookies: [{ name: "accessToken", value: null, options }] };
+};

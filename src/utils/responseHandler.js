@@ -5,7 +5,6 @@ module.exports = controllerFunction => async (request, response, next) => {
             for(let cookie of cookies) {
                 if (cookie.value === null) response.clearCookie(cookie.name, cookie.options);
                 else response.cookie(cookie.name, cookie.value, cookie.options);
-                console.log(cookie)
             }
         }
         response.status(+statusCode).json(resObj);
