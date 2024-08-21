@@ -30,10 +30,18 @@ exports.createVehicle = async (req) => {
 }
 
 
-exports.vehicles = async () => {
-    const [vehicles] = await mysqlPromise.query(`
-        SELECT * FROM vehicles
-    `)
+exports.vehicles = async ({query}) => {
+    const {search} = query
+
+    let sqlQuery = `SELECT * FROM vehicles`
+    const sqlParams = []
+
+    if (search) {
+        sqlQuery += " WHERE vehicle_number LIKE ?";
+        sqlParams.push(`%${search}%`)
+    }
+
+    const [vehicles] = await mysqlPromise.query(sqlQuery, sqlParams);
 
     return {
         status: true,

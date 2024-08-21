@@ -32,10 +32,18 @@ exports.createDriver = async (req) => {
 }
 
 
-exports.drivers = async () => {
-    const [drivers] = await mysqlPromise.query(`
-        SELECT * FROM drivers
-    `)
+exports.drivers = async ({query}) => {
+    const { search } = query
+
+    let sqlQuery = `SELECT * FROM drivers`
+    const sqlParams = []
+
+    if (search) {
+        sqlQuery += " WHERE name LIKE ? OR phone_number LIKE ?";
+        sqlParams.push(`%${search}%`, `%${search}%`)
+    }
+
+    const [drivers] = await mysqlPromise.query(sqlQuery, sqlParams);
 
     return {
         status: true,
