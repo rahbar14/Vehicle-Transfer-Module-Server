@@ -1,5 +1,6 @@
 /node_modules
 /logs
+/public
 
 package-lock.json
 *.log
