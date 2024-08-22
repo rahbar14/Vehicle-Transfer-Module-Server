@@ -75,7 +75,7 @@ exports.getUser = async ({user}) => ({
     data: user
 })
 
-exports.logout = async (req, res) => {
+exports.logout = async () => {
     let options = {
         httpOnly: true,
         secure: false,
@@ -83,3 +83,14 @@ exports.logout = async (req, res) => {
 
     return { status:true, message: "User logged out", cookies: [{ name: "accessToken", value: null, options }] };
 };
+
+exports.dashboard = async () => {
+    const [[vehicles_count]] = await mysqlPromise.query("SELECT COUNT(vehicle_number) AS count FROM vehicles")
+    const [[drivers_count]] = await mysqlPromise.query("SELECT COUNT(id) AS count FROM drivers")
+
+    return {
+        status: true,
+        message: "Dashboard data",
+        data: { vehicles_count: vehicles_count?.count ?? 0, drivers_count: drivers_count?.count ?? 0 }
+    }
+}
