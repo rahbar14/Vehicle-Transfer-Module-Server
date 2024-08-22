@@ -87,6 +87,7 @@ CREATE TABLE `vehicles` (
 --
 ALTER TABLE `drivers`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phone_number` (`phone_number`),
   ADD KEY `idx_entity_id` (`entity_id`);
 
 --
