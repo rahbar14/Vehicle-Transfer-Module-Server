@@ -31,6 +31,8 @@ exports.createDriver = async (req) => {
         }
     } catch (error) {
         if (error.code === "ER_DUP_ENTRY") {
+            await req.conn.rollback()
+            req.conn.release();
             return {
                 statusCode: 400,
                 message: "Driver already registered",

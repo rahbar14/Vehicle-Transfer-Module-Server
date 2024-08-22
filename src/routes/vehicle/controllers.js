@@ -28,14 +28,16 @@ exports.createVehicle = async (req) => {
             data: driver.insertId
         }
     } catch (error) {
-    if (error.code === "ER_DUP_ENTRY") {
-        return {
-            statusCode: 400,
-            message: "Vehicle already registered",
-            data: []
+        if (error.code === "ER_DUP_ENTRY") {
+            await req.conn.rollback()
+            req.conn.release();
+            return {
+                statusCode: 400,
+                message: "Vehicle already registered",
+                data: []
+            }
         }
-    }
-    throw error;
+        throw error;
 }
 
 }
